@@ -385,6 +385,9 @@
             <button type="button" class="api-toggle" onclick="toggleApiKey()" title="키 표시/숨기기">👁️</button>
           </div>
           <div class="field-error-msg" id="api_key-err">API 키를 입력해주세요</div>
+          <div id="api-save-notice" style="display:none;font-size:11px;color:#1B7A40;margin-top:4px;">
+            ✓ 이전에 입력한 API 키가 자동으로 입력됐습니다
+          </div>
         </div>
 
         <div class="field-row">
@@ -588,6 +591,9 @@
         완성된 HTML 기획서가 발송됩니다.<br><br>
         스팸함도 함께 확인해주세요.
       </p>
+      <button onclick="resetForm()" style="margin-top:24px;width:100%;background:#1A2744;color:white;border:none;border-radius:10px;padding:14px;font-family:Noto Sans KR,sans-serif;font-size:14px;font-weight:700;cursor:pointer;">
+        ↩ 다른 제품 기획서 만들기
+      </button>
     </div>
   </div>
 
@@ -616,6 +622,27 @@ const WEBHOOK_URL = "https://hook.us2.make.com/j4ou4wfz4ga7qvwtfiu10bh79vriyuxp"
 /* ══════════════════════════════════════════
    폼 로직 (수정 불필요)
 ══════════════════════════════════════════ */
+
+// API 키 자동저장 (localStorage)
+function saveApiKey(key) {
+  try { localStorage.setItem('pagecraft_api_key', key); } catch(e) {}
+}
+function loadApiKey() {
+  try { return localStorage.getItem('pagecraft_api_key') || ''; } catch(e) { return ''; }
+}
+
+// 페이지 로드 시 저장된 API 키 자동 입력
+window.addEventListener('DOMContentLoaded', function() {
+  const saved = loadApiKey();
+  if (saved) {
+    const apiInput = document.getElementById('api_key');
+    if (apiInput) {
+      apiInput.value = saved;
+      const notice = document.getElementById('api-save-notice');
+      if (notice) { notice.style.display = 'block'; }
+    }
+  }
+});
 
 // API 키 보기/숨기기
 function toggleApiKey() {
@@ -714,6 +741,8 @@ document.getElementById('mainForm').addEventListener('submit', async function(e)
   showState('loading');
 
   const data = collectFormData();
+  // API 키 브라우저에 저장 (다음 방문 시 자동 입력)
+  if (data.api_key) saveApiKey(data.api_key);
 
   try {
     const response = await fetch(WEBHOOK_URL, {

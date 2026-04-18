@@ -609,7 +609,7 @@
 /* ══════════════════════════════════════════
    ⚙️ 설정 — 여기만 바꾸면 됩니다
 ══════════════════════════════════════════ */
-const WEBHOOK_URL = "YOUR_MAKE_WEBHOOK_URL";
+const WEBHOOK_URL = "https://hook.us2.make.com/j4ou4wfz4ga7qvwtfiu10bh79vriyuxp";
 // ↑ Make.com Webhook URL을 여기에 붙여넣으세요
 // 예: "https://hook.eu2.make.com/abcdefgh1234567890"
 
@@ -704,7 +704,7 @@ document.getElementById('mainForm').addEventListener('submit', async function(e)
   if (!validateRequired()) return;
 
   // Webhook URL 설정 확인
-  if (!WEBHOOK_URL || WEBHOOK_URL === 'YOUR_MAKE_WEBHOOK_URL') {
+  if (!WEBHOOK_URL || WEBHOOK_URL === 'INVALID') {
     document.getElementById('errorMsg').innerHTML =
       '⚙️ 운영자 설정 필요: WEBHOOK_URL이 설정되지 않았습니다.<br>setup_guide.html을 참고해 Make.com Webhook URL을 입력해주세요.';
     showState('error');

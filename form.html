@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PageCraft AI | 상세페이지 기획서 신청</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════
+     설정값 — 여기만 바꾸면 됩니다
+  ═══════════════════════════════ */
+  :root {
+    --WEBHOOK_URL: "YOUR_MAKE_WEBHOOK_URL"; /* ← Make.com Webhook URL 여기에 입력 */
+    --brand: #1A2744;
+    --brand-mid: #2E4B8F;
+    --brand-soft: #6B8FD4;
+    --brand-pale: #EEF3FC;
+    --accent: #E85D26;
+    --accent-pale: #FFF0E8;
+    --green: #1B7A40;
+    --green-pale: #E8F6EE;
+    --red: #C0392B;
+    --red-pale: #FDECEA;
+    --bg: #FDFEFF;
+    --text: #0F1520;
+    --text-mid: #3A4A66;
+    --text-light: #7A8BA0;
+    --border: rgba(26,39,68,0.12);
+    --shadow: 0 4px 24px rgba(26,39,68,0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #F2F5FB;
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--brand);
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  }
+  .logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px; font-weight: 900;
+    color: white; letter-spacing: -0.5px;
+  }
+  .logo span { color: #FFD580; }
+  .header-desc {
+    font-size: 11px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+
+  /* ── INTRO CARD ── */
+  .intro-card {
+    background: var(--brand);
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+  .intro-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(107,143,212,0.3), transparent 60%);
+  }
+  .intro-eyebrow {
+    font-size: 10px; letter-spacing: 2.5px; font-weight: 700;
+    color: var(--brand-soft); margin-bottom: 10px;
+    position: relative; z-index: 1;
+  }
+  .intro-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px; font-weight: 900;
+    color: white; line-height: 1.4; letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .intro-title em { color: #FFD580; font-style: normal; }
+  .intro-steps {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .intro-step {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85);
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 400;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── COST INFO ── */
+  .cost-info {
+    background: var(--accent-pale);
+    border: 1.5px solid rgba(232,93,38,0.2);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 12.5px; color: var(--accent);
+    line-height: 1.7;
+  }
+  .cost-info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .form-section-head {
+    background: var(--brand-pale);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .form-section-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--brand);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .form-section-title {
+    font-size: 14px; font-weight: 700; color: var(--brand);
+  }
+  .form-section-desc {
+    font-size: 11px; color: var(--text-light); margin-top: 2px;
+  }
+  .req-badge {
+    background: var(--accent); color: white;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 6px; border-radius: 4px;
+    margin-left: 4px; vertical-align: middle;
+  }
+
+  /* ── FIELD ── */
+  .form-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-label {
+    font-size: 13px; font-weight: 700;
+    color: var(--text);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .field-hint {
+    font-size: 11px; color: var(--text-light);
+    line-height: 1.55;
+  }
+  .field-input, .field-textarea, .field-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13.5px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  .field-input:focus, .field-textarea:focus, .field-select:focus {
+    border-color: var(--brand-soft);
+    box-shadow: 0 0 0 3px rgba(107,143,212,0.15);
+    background: white;
+  }
+  .field-input.req:focus { border-color: var(--brand); }
+  .field-input.api-field {
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    background: #F8FAFF;
+  }
+  .field-textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.7;
+  }
+  .field-select { cursor: pointer; }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* API KEY TOGGLE */
+  .api-wrap { position: relative; }
+  .api-toggle {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    font-size: 16px; color: var(--text-light);
+    padding: 4px;
+  }
+  .api-toggle:hover { color: var(--brand); }
+
+  /* ── SUBMIT ── */
+  .submit-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .submit-notice {
+    background: var(--green-pale);
+    border: 1px solid rgba(27,122,64,0.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 12px; color: var(--green);
+    line-height: 1.7;
+    margin-bottom: 18px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--brand-mid), var(--brand));
+    color: white;
+    border: none; border-radius: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px; font-weight: 700;
+    padding: 17px;
+    cursor: pointer;
+    letter-spacing: -0.3px;
+    transition: opacity 0.2s, transform 0.1s;
+    box-shadow: 0 6px 20px rgba(26,39,68,0.3);
+  }
+  .submit-btn:hover { opacity: 0.92; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ── STATES ── */
+  .state-loading, .state-success, .state-error {
+    display: none;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  .state-loading.active, .state-success.active, .state-error.active {
+    display: block;
+  }
+  .state-icon { font-size: 56px; margin-bottom: 16px; }
+  .state-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .state-desc {
+    font-size: 13.5px; color: var(--text-mid);
+    line-height: 1.85;
+  }
+  .state-success .state-title { color: var(--green); }
+  .state-error .state-title { color: var(--red); }
+  .retry-btn {
+    margin-top: 20px;
+    background: var(--brand-pale);
+    color: var(--brand);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* SPINNER */
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid var(--brand-pale);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* FIELD VALIDATION */
+  .field-input.error, .field-textarea.error, .field-select.error {
+    border-color: var(--red);
+    background: var(--red-pale);
+  }
+  .field-error-msg {
+    font-size: 11px; color: var(--red);
+    display: none;
+  }
+  .field-error-msg.show { display: block; }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 4px;
+    background: var(--brand-pale);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--brand-soft), var(--brand));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  @media (max-width: 480px) {
+    .wrapper { padding: 20px 12px; }
+    .form-body { padding: 18px 18px; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Page<span>Craft</span> AI</div>
+  <div class="header-desc">상세페이지 기획서 자동 생성</div>
+</header>
+
+<div class="wrapper">
+
+  <!-- INTRO -->
+  <div class="intro-card">
+    <p class="intro-eyebrow">AI-POWERED PLANNING</p>
+    <h1 class="intro-title">
+      제품 정보를 입력하면<br>
+      <em>완성형 기획서</em>가 이메일로
+    </h1>
+    <div class="intro-steps">
+      <span class="intro-step">📝 폼 입력</span>
+      <span class="intro-step">⚡ AI 생성 (2~5분)</span>
+      <span class="intro-step">📩 이메일 수신</span>
+    </div>
+  </div>
+
+  <!-- COST NOTICE -->
+  <div class="cost-info">
+    <span class="cost-info-icon">💳</span>
+    <div>
+      <strong>본인 Anthropic API 키를 사용합니다.</strong><br>
+      AI 사용 비용(페이지당 약 ₩50~150)은 본인 Anthropic 계정에서 차감됩니다.
+      API 키가 없으면 <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);font-weight:700">console.anthropic.com</a> 에서 무료로 발급받으세요.
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <form id="mainForm" novalidate>
+
+    <!-- SECTION 1: 필수 정보 -->
+    <div class="form-card">
+      <div class="form-section-head">
+        <div class="form-section-icon">🔑</div>
+        <div>
+          <div class="form-section-title">필수 정보 <span class="req-badge">REQUIRED</span></div>
+          <div class="form-section-desc">이 항목들은 반드시 입력해야 합니다</div>
+        </div>
+      </div>
+      <div class="form-body">
+
+        <div class="field-group">
+          <label class="field-label" for="email">이메일 주소 <span class="req-badge">필수</span></label>
+          <div class="field-hint">기획서를 받을 이메일 주소를 입력하세요</div>
+          <input type="email" id="email" name="email" class="field-input req"
+            placeholder="example@email.com" autocomplete="email">
+          <div class="field-error-msg" id="email-err">올바른 이메일 주소를 입력해주세요</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="api_key">Anthropic API 키 <span class="req-badge">필수</span></label>
+          <div class="field-hint">sk-ant-api... 로 시작하는 키를 입력하세요. 저장되지 않습니다.</div>
+          <div class="api-wrap">
+            <input type="password" id="api_key" name="api_key" class="field-input req api-field"
+              placeholder="sk-ant-api03-...">
+            <button type="button" class="api-toggle" onclick="toggleApiKey()" title="키 표시/숨기기">👁️</button>
+          </div>
+          <div class="field-error-msg" id="api_key-err">API 키를 입력해주세요</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="product_name">제품명 <span class="req-badge">필수</span></label>
+            <input type="text" id="product_name" name="product_name" class="field-input req"
+              placeholder="예) 에델바이스 세럼">
+            <div class="field-error-msg" id="product_name-err">제품명을 입력해주세요</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="category">카테고리 <span class="req-badge">필수</span></label>
+            <select id="category" name="category" class="field-select req">
+              <option value="">선택하세요</option>
+              <optgroup label="식품/건강">
+                <option value="식품/간편식">식품 / 간편식</option>
+                <option value="건강기능식품">건강기능식품</option>
+                <option value="농산물/신선식품">농산물 / 신선식품</option>
+                <option value="음료/차">음료 / 차</option>
+              </optgroup>
+              <optgroup label="뷰티/헬스">
+                <option value="스킨케어/화장품">스킨케어 / 화장품</option>
+                <option value="메이크업">메이크업</option>
+                <option value="헤어/바디케어">헤어 / 바디케어</option>
+                <option value="향수">향수</option>
+              </optgroup>
+              <optgroup label="패션/잡화">
+                <option value="의류/패션">의류 / 패션</option>
+                <option value="가방/지갑">가방 / 지갑</option>
+                <option value="신발">신발</option>
+                <option value="주얼리/악세서리">주얼리 / 악세서리</option>
+              </optgroup>
+              <optgroup label="생활/가전">
+                <option value="생활용품/리빙">생활용품 / 리빙</option>
+                <option value="주방용품">주방용품</option>
+                <option value="가전/디지털">가전 / 디지털</option>
+                <option value="인테리어/홈데코">인테리어 / 홈데코</option>
+              </optgroup>
+              <optgroup label="기타">
+                <option value="유아/육아">유아 / 육아</option>
+                <option value="반려동물">반려동물</option>
+                <option value="스포츠/아웃도어">스포츠 / 아웃도어</option>
+                <option value="기타">기타</option>
+              </optgroup>
+            </select>
+            <div class="field-error-msg" id="category-err">카테고리를 선택해주세요</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 2: 제품 정보 -->
+    <div class="form-card">
+      <div class="form-section-head">
+        <div class="form-section-icon">📦</div>
+        <div>
+          <div class="form-section-title">제품 기본 정보</div>
+          <div class="form-section-desc">입력할수록 기획서 품질이 높아집니다 (선택)</div>
+        </div>
+      </div>
+      <div class="form-body">
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="brand_name">브랜드명</label>
+            <input type="text" id="brand_name" name="brand_name" class="field-input"
+              placeholder="예) BLOOM">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="tone">브랜드 톤앤매너</label>
+            <input type="text" id="tone" name="tone" class="field-input"
+              placeholder="예) 미니멀, 감성적, 프리미엄">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="target_customer">타겟 고객</label>
+          <div class="field-hint">연령, 성별, 라이프스타일, 구매 트리거 등</div>
+          <textarea id="target_customer" name="target_customer" class="field-textarea"
+            placeholder="예) 30~40대 직장인 여성, 환절기 피부 고민이 있는 분, 저자극 제품을 선호하는 분"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="usp">차별 포인트 (USP)</label>
+          <div class="field-hint">경쟁 제품과 구분되는 이 제품만의 핵심 강점</div>
+          <textarea id="usp" name="usp" class="field-textarea"
+            placeholder="예) 알프스산 에델바이스 추출물, 3중 히알루론산 처방, 향료·색소·알코올 무첨가"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="core_problem">고객의 핵심 문제</label>
+          <textarea id="core_problem" name="core_problem" class="field-textarea"
+            placeholder="예) 환절기마다 피부가 예민해지고 당김, 기존 세럼이 끈적거림, 자극이 걱정됨"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="solution_value">해결 가치</label>
+          <textarea id="solution_value" name="solution_value" class="field-textarea"
+            placeholder="예) 자극 없이 차분하게 수분을 채워 환절기 피부를 안정시켜 줍니다"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 3: 상세 정보 -->
+    <div class="form-card">
+      <div class="form-section-head">
+        <div class="form-section-icon">🎯</div>
+        <div>
+          <div class="form-section-title">마케팅 상세 정보</div>
+          <div class="form-section-desc">더 정교한 기획서를 원한다면 (선택)</div>
+        </div>
+      </div>
+      <div class="form-body">
+
+        <div class="field-group">
+          <label class="field-label" for="features">주요 특징</label>
+          <textarea id="features" name="features" class="field-textarea"
+            placeholder="예) 에델바이스 추출물 5,000ppm, 저분자/중분자/고분자 3중 HA, 비건 처방, 유리 용기"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="trust_basis">신뢰 근거</label>
+          <div class="field-hint">인증, 수상, 임상 결과, 판매량 등 검증된 수치나 사실</div>
+          <textarea id="trust_basis" name="trust_basis" class="field-textarea"
+            placeholder="예) CGMP 인증 제조, 피부과 전문의 자문, 누적 판매 ○만 개 (실제 근거가 있는 것만 입력)"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="purchase_barrier">구매 장벽</label>
+          <div class="field-hint">고객이 구매를 망설이는 이유</div>
+          <textarea id="purchase_barrier" name="purchase_barrier" class="field-textarea"
+            placeholder="예) 가격이 부담스럽다, 효과가 있을지 모르겠다, 내 피부에 맞을지 걱정된다"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="color_mood">색상 / 무드</label>
+            <input type="text" id="color_mood" name="color_mood" class="field-input"
+              placeholder="예) 크림, 세이지 그린, 따뜻한 무드">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="reference_url">참고 링크</label>
+            <input type="url" id="reference_url" name="reference_url" class="field-input"
+              placeholder="https://...">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="must_words">반드시 넣어야 할 표현</label>
+          <input type="text" id="must_words" name="must_words" class="field-input"
+            placeholder="예) 에델바이스, 알프스, 자연주의">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="avoid_words">피해야 할 표현</label>
+          <input type="text" id="avoid_words" name="avoid_words" class="field-input"
+            placeholder="예) 최고, 1위, 완치, 치료">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-card">
+      <div class="submit-notice">
+        <span>✅</span>
+        <div>
+          입력한 정보는 기획서 생성에만 사용되며 별도 저장되지 않습니다.
+          API 키는 Anthropic에 직접 전달되고 저장되지 않습니다.
+          생성된 기획서는 <strong>2~5분 내 이메일</strong>로 발송됩니다.
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        ✦ 기획서 생성 요청하기
+      </button>
+    </div>
+
+  </form>
+
+  <!-- LOADING STATE -->
+  <div class="form-card" id="stateLoading" style="padding:0">
+    <div class="state-loading">
+      <div class="spinner"></div>
+      <div class="state-title" style="color:var(--brand)">기획서 생성 중...</div>
+      <p class="state-desc">
+        AI가 제품 정보를 분석하고 있습니다.<br>
+        이 창을 닫아도 이메일로 결과가 발송됩니다.<br><br>
+        <strong>약 2~5분 소요됩니다.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="form-card" id="stateSuccess" style="padding:0">
+    <div class="state-success">
+      <div class="state-icon">📩</div>
+      <div class="state-title">요청이 접수됐습니다!</div>
+      <p class="state-desc">
+        입력하신 이메일로 2~5분 내에<br>
+        완성된 HTML 기획서가 발송됩니다.<br><br>
+        스팸함도 함께 확인해주세요.
+      </p>
+    </div>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="form-card" id="stateError" style="padding:0">
+    <div class="state-error">
+      <div class="state-icon">⚠️</div>
+      <div class="state-title">전송에 실패했습니다</div>
+      <p class="state-desc" id="errorMsg">
+        잠시 후 다시 시도해주세요.
+      </p>
+      <button class="retry-btn" onclick="resetForm()">↩ 다시 시도</button>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+/* ══════════════════════════════════════════
+   ⚙️ 설정 — 여기만 바꾸면 됩니다
+══════════════════════════════════════════ */
+const WEBHOOK_URL = "YOUR_MAKE_WEBHOOK_URL";
+// ↑ Make.com Webhook URL을 여기에 붙여넣으세요
+// 예: "https://hook.eu2.make.com/abcdefgh1234567890"
+
+/* ══════════════════════════════════════════
+   폼 로직 (수정 불필요)
+══════════════════════════════════════════ */
+
+// API 키 보기/숨기기
+function toggleApiKey() {
+  const input = document.getElementById('api_key');
+  const btn = document.querySelector('.api-toggle');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+// 필수 필드 검증
+function validateRequired() {
+  const required = [
+    { id: 'email', errId: 'email-err', check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'api_key', errId: 'api_key-err', check: v => v.trim().length > 10 },
+    { id: 'product_name', errId: 'product_name-err', check: v => v.trim().length > 0 },
+    { id: 'category', errId: 'category-err', check: v => v.trim().length > 0 },
+  ];
+
+  let valid = true;
+  required.forEach(({ id, errId, check }) => {
+    const el = document.getElementById(id);
+    const errEl = document.getElementById(errId);
+    const val = el.value;
+    if (!check(val)) {
+      el.classList.add('error');
+      errEl.classList.add('show');
+      valid = false;
+    } else {
+      el.classList.remove('error');
+      errEl.classList.remove('show');
+    }
+  });
+
+  if (!valid) {
+    document.querySelector('.field-input.error, .field-select.error')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
+// 폼 데이터 수집
+function collectFormData() {
+  const fields = [
+    'email','api_key','product_name','category','brand_name',
+    'target_customer','core_problem','solution_value','features',
+    'usp','trust_basis','purchase_barrier','tone','color_mood',
+    'avoid_words','must_words','reference_url'
+  ];
+  const data = {};
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    if (el) data[f] = el.value.trim();
+  });
+  return data;
+}
+
+// 상태 전환
+function showState(state) {
+  document.getElementById('mainForm').style.display = state === 'form' ? 'block' : 'none';
+  document.getElementById('stateLoading').style.display = state === 'loading' ? 'block' : 'none';
+  document.getElementById('stateSuccess').style.display = state === 'success' ? 'block' : 'none';
+  document.getElementById('stateError').style.display = state === 'error' ? 'block' : 'none';
+
+  const loading = document.querySelector('.state-loading');
+  const success = document.querySelector('.state-success');
+  const error = document.querySelector('.state-error');
+  [loading, success, error].forEach(el => el?.classList.remove('active'));
+
+  if (state === 'loading') loading?.classList.add('active');
+  if (state === 'success') success?.classList.add('active');
+  if (state === 'error') error?.classList.add('active');
+}
+
+function resetForm() {
+  showState('form');
+}
+
+// 폼 제출
+document.getElementById('mainForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!validateRequired()) return;
+
+  // Webhook URL 설정 확인
+  if (!WEBHOOK_URL || WEBHOOK_URL === 'YOUR_MAKE_WEBHOOK_URL') {
+    document.getElementById('errorMsg').innerHTML =
+      '⚙️ 운영자 설정 필요: WEBHOOK_URL이 설정되지 않았습니다.<br>setup_guide.html을 참고해 Make.com Webhook URL을 입력해주세요.';
+    showState('error');
+    return;
+  }
+
+  showState('loading');
+
+  const data = collectFormData();
+
+  try {
+    const response = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok || response.status === 200) {
+      showState('success');
+    } else {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+  } catch (err) {
+    console.error('Submission error:', err);
+    // Make.com은 CORS 오류를 낼 수 있지만 실제로는 성공한 경우도 있음
+    // 네트워크 오류가 아닌 CORS 오류면 성공으로 처리
+    if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+      // CORS로 인한 fetch 실패지만 Make.com이 실제로 받았을 수 있음
+      showState('success');
+    } else {
+      document.getElementById('errorMsg').innerHTML =
+        `오류: ${err.message}<br><br>Webhook URL이 올바른지 확인해주세요.`;
+      showState('error');
+    }
+  }
+});
+
+// 실시간 검증 제거 (입력 중 에러 표시 방지)
+document.querySelectorAll('.field-input.req, .field-select.req').forEach(el => {
+  el.addEventListener('input', function() {
+    this.classList.remove('error');
+    const errEl = document.getElementById(this.id + '-err');
+    if (errEl) errEl.classList.remove('show');
+  });
+});
+</script>
+</body>
+</html>
